@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <service
-            android:name="info.sunng.muzei.maps.MapArtSource"
+            android:name=".MapzeiArtSource"
             android:description="@string/source_description"
             android:icon="@drawable/ic_source"
             android:label="@string/source_name" >

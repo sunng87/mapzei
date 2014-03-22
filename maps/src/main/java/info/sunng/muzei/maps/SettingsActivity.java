@@ -3,21 +3,17 @@ package info.sunng.muzei.maps;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import java.util.List;
@@ -162,10 +158,18 @@ public class SettingsActivity extends PreferenceActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent i = new Intent(this, MapArtSource.class);
-        i.putExtra("REFRESH", true);
-        startService(i);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sp.getString("MAP_SOURCE", null).equals("mapbox")
+                && sp.getString("MAPBOX_MAP_ID", "").isEmpty()) {
+            Toast t = Toast.makeText(this, R.string.mapbox_id_required, 20);
+            t.show();
+            return;
+        } else {
+            super.onBackPressed();
+            Intent i = new Intent(this, MapzeiArtSource.class);
+            i.putExtra("REFRESH", true);
+            startService(i);
+        }
     }
 
     /**

@@ -25,7 +25,7 @@ import info.sunng.muzei.maps.maps.OSMStatic;
 /**
  * Created by nsun on 3/19/14.
  */
-public class MapArtSource extends RemoteMuzeiArtSource {
+public class MapzeiArtSource extends RemoteMuzeiArtSource {
 
     private static final String SOURCE_NAME = "MapsArtSource";
 
@@ -33,7 +33,7 @@ public class MapArtSource extends RemoteMuzeiArtSource {
 
     public static final String REFRESH = "REFRESH";
 
-    public MapArtSource() {
+    public MapzeiArtSource() {
         super(SOURCE_NAME);
     }
 
