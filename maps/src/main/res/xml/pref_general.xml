@@ -1,0 +1,31 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="MAP_SOURCE"
+        android:title="@string/pref_title_map_source"
+        android:defaultValue="osm"
+        android:entries="@array/pref_map_source_list_titles"
+        android:entryValues="@array/pref_map_source_list_values"/>
+
+    <EditTextPreference
+        android:key="MAPBOX_MAP_KEY"
+        android:title="@string/pref_title_mapbox_key"
+        android:summary="@string/pref_summary_mapbox_key"
+        android:defaultValue="@string/mapbox_map_id"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:maxLines="1" />
+
+    <ListPreference
+        android:key="ZOOM_LEVEL"
+        android:title="@string/pref_title_zoom_level"
+        android:defaultValue="16"
+        android:entries="@array/pref_zoom_level_list_titles"
+        android:entryValues="@array/pref_zoom_level_list_values" />
+
+    <CheckBoxPreference
+        android:key="WIFI_ONLY"
+        android:title="@string/pref_title_wifi_only"
+        android:defaultValue="false" />
+
+</PreferenceScreen>
