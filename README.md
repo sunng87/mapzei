@@ -1,4 +1,4 @@
-# Meizu Maps
+# mapzei
 
 Map is art, too. Our map geeks need a live wallpaper for maps. Meizu 
 Maps gives you a map everyday for a random city.
@@ -7,7 +7,8 @@ Maps gives you a map everyday for a random city.
 
 * City data dumped from [Geonames](http://geonames.org), hosted on 
 [AVOSCloud](https://avoscloud.com).
-* Map tiles from [OpenStreetMap](http://openstreetmap.org), static map 
+* Default Map tiles from [OpenStreetMap](http://openstreetmap.org), static map 
 service from [staticMapLite](http://http://staticmap.openstreetmap.de/)
+* Optional maps tiles from [Google Maps](http://maps.google.com) and [Mapbox](http://mapbox.com)
 
 
