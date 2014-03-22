@@ -160,7 +160,7 @@ public class SettingsActivity extends PreferenceActivity {
     public void onBackPressed() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         if (sp.getString("MAP_SOURCE", null).equals("mapbox")
-                && sp.getString("MAPBOX_MAP_ID", "").isEmpty()) {
+                && sp.getString("MAPBOX_MAP_KEY", "").isEmpty()) {
             Toast t = Toast.makeText(this, R.string.mapbox_id_required, 20);
             t.show();
             return;
