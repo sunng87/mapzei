@@ -8,7 +8,7 @@ import info.sunng.muzei.maps.R;
  */
 public class MapboxStatic implements MapSource{
 
-    private final String mapboxId;
+    private String mapboxId;
 
     public MapboxStatic(String mapboxId){
         this.mapboxId = mapboxId;

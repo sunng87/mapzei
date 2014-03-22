@@ -11,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 19
-        versionCode 3
-        versionName "1.1.0"
+        versionCode 5
+        versionName "1.1.3"
 
         resValue "string","avoscloud_api_id",keyProps['avoscloud_api_id']
         resValue "string","avoscloud_api_secret",keyProps['avoscloud_api_secret']
@@ -25,8 +25,10 @@ android {
     }
     buildTypes {
         debug {
+            resValue "string","mapbox_map_id",keyProps['mapbox_map_id']
         }
         release {
+            resValue "string","mapbox_map_id", ""
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
@@ -39,6 +41,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.google.android.apps.muzei:muzei-api:+'
+    compile 'com.android.support:support-v4:18.0.0'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }

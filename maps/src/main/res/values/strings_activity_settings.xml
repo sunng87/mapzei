@@ -1,0 +1,45 @@
+<resources>
+        <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_map_source">Map Source</string>
+    <string-array name="pref_map_source_list_titles">
+        <item>OpenStreetMap (Mapnik)</item>
+        <item>Google Maps</item>
+        <item>Mapbox</item>
+    </string-array>
+    <string-array name="pref_map_source_list_values">
+        <item>osm</item>
+        <item>google</item>
+        <item>mapbox</item>
+    </string-array>
+
+    <string name="pref_title_mapbox_key">Mapbox Key</string>
+    <string name="pref_summary_mapbox_key">Required if you use Mapbox source</string>
+
+    <string name="pref_title_zoom_level">Zoom Level</string>
+    <string-array name="pref_zoom_level_list_titles">
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+    </string-array>
+
+    <string-array name="pref_zoom_level_list_values">
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+    </string-array>
+
+    <string name="pref_title_wifi_only">Only on WiFi</string>
+
+</resources>

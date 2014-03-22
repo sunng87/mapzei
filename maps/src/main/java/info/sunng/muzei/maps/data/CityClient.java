@@ -29,5 +29,13 @@ public class CityClient {
         }
     }
 
-
+    public int getTotalCities() {
+        AVQuery<AVObject> query = new AVQuery<>("City");
+        try {
+            return query.count();
+        } catch (AVException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

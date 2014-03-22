@@ -1,8 +1,13 @@
 package info.sunng.muzei.maps;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.avos.avoscloud.AVOSCloud;
@@ -13,6 +18,7 @@ import java.util.Calendar;
 
 import info.sunng.muzei.maps.data.City;
 import info.sunng.muzei.maps.data.CityClient;
+import info.sunng.muzei.maps.maps.GoogleMapsStatic;
 import info.sunng.muzei.maps.maps.MapboxStatic;
 import info.sunng.muzei.maps.maps.OSMStatic;
 
@@ -24,20 +30,34 @@ public class MapArtSource extends RemoteMuzeiArtSource {
     private static final String SOURCE_NAME = "MapsArtSource";
 
     public static final long SOME_DAY = 484070400000l; // 1985.5.5
-    public static final int TOTAL_CITIES = 22778;
 
-    public MapSource mapSource;
+    public static final String REFRESH = "REFRESH";
 
     public MapArtSource() {
         super(SOURCE_NAME);
     }
 
+    public MapSource getMapSource() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String mapSource = sp.getString("MAP_SOURCE", "osm");
+        Log.d(SOURCE_NAME, mapSource);
+        switch (mapSource){
+            case "osm":
+                return new OSMStatic();
+            case "google":
+                return new GoogleMapsStatic();
+            case "mapbox":
+                String mapKey = sp.getString("MAPBOX_MAP_KEY", null);
+                return new MapboxStatic(mapKey.trim());
+            default:
+                return new OSMStatic();
+        }
+
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-
-        mapSource = new MapboxStatic(
-                getResources().getString(R.string.mapbox_map_id));
 
         AVOSCloud.useAVCloudCN();
         AVOSCloud.initialize(this,
@@ -47,33 +67,47 @@ public class MapArtSource extends RemoteMuzeiArtSource {
 
     @Override
     protected void onTryUpdate(int reason) throws RetryException {
-        int cityQ = -1;
-        if (getCurrentArtwork() != null) {
-            cityQ = Integer.valueOf(getCurrentArtwork().getToken());
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        // check network
+        if (! isNetworkConnected()) {
+            // schedule a short term retry
+            throw new RetryException();
+        } else {
+            // WIFI only
+            if (sp.getBoolean("WIFI_ONLY", false) && !isWifi()) {
+                throw new RetryException();
+            }
         }
 
-        int q = getQForToday();
+        CityClient cc = new CityClient();
+        int q = getQForToday(cc);
         Log.d("mapartsurce", "Q for toady: " + q);
-        if (q != cityQ) {
-            CityClient cc = new CityClient();
-            City city = cc.getCity(q);
 
-            float lat = city.getLat();
-            float lon = city.getLon();
+        City city = cc.getCity(q);
 
-            String url = mapSource.getMapUrlFor(lat, lon, 15, 1080, 1080);
-            Log.d("mapartsource", url);
-            //String wikiUrl = String.format("https://en.wikipedia.com/wiki/%s", city.getAname().replaceAll(" ", "_"));
-            String geoUri = String.format("geo:%f,%f", city.getLat(), city.getLon());
+        float lat = city.getLat();
+        float lon = city.getLon();
 
-            publishArtwork(new Artwork.Builder()
-                    .title(city.getAname())
-                    .byline(city.getCountry())
-                    .imageUri(Uri.parse(url))
-                    .token(String.valueOf(city.getQ()))
-                    .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(geoUri)))
-                    .build());
-        }
+        int zoom = Integer.valueOf(sp.getString("ZOOM_LEVEL", "16"));
+        String url = getMapSource().getMapUrlFor(lat, lon, zoom, 1080, 1080);
+        Log.d("mapartsource", url);
+
+        if (getCurrentArtwork() != null &&
+                (getCurrentArtwork().getImageUri().toString()).equals(url)) {
+            // map unchanged, skip
+            return ;
+        };
+
+        //String wikiUrl = String.format("https://en.wikipedia.com/wiki/%s", city.getAname().replaceAll(" ", "_"));
+        String geoUri = String.format("geo:%f,%f", city.getLat(), city.getLon());
+
+        publishArtwork(new Artwork.Builder()
+                .title(city.getAname())
+                .byline(city.getCountry())
+                .imageUri(Uri.parse(url))
+                .token(String.valueOf(city.getQ()))
+                .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(geoUri)))
+                .build());
 
         // schedule next update: 3h later
         scheduleUpdate(System.currentTimeMillis() + 3 * 60 * 60 * 1000);
@@ -83,11 +117,33 @@ public class MapArtSource extends RemoteMuzeiArtSource {
     /**
      * @return
      */
-    public static int getQForToday() {
+    public static int getQForToday(CityClient c) {
         long current = Calendar.getInstance().getTimeInMillis();
         long dateDiff = (current - SOME_DAY) / (1000 * 60 * 60 * 24);
 
-        return (int)(dateDiff % TOTAL_CITIES);
+        return (int)(dateDiff % c.getTotalCities());
     }
 
+    public boolean isNetworkConnected(){
+        NetworkInfo ni = ((ConnectivityManager) getSystemService(
+                Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        return (ni != null && ni.isConnected()) ;
+    }
+
+    public boolean isWifi() {
+        NetworkInfo ni = ((ConnectivityManager) getSystemService(
+                Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
+        return ni.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        super.onHandleIntent(intent);
+
+        if (intent.getBooleanExtra(REFRESH, false)) {
+
+            scheduleUpdate(System.currentTimeMillis() + 1000);
+        }
+    }
 }
