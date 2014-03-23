@@ -99,7 +99,7 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
         };
 
         //String wikiUrl = String.format("https://en.wikipedia.com/wiki/%s", city.getAname().replaceAll(" ", "_"));
-        String geoUri = String.format("geo:%f,%f", city.getLat(), city.getLon());
+        String geoUri = String.format("geo:%f,%f?z=%d", city.getLat(), city.getLon(), zoom);
 
         publishArtwork(new Artwork.Builder()
                 .title(city.getAname())
