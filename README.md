@@ -11,4 +11,8 @@ Maps gives you a map everyday for a random city.
 service from [staticMapLite](http://http://staticmap.openstreetmap.de/)
 * Optional maps tiles from [Google Maps](http://maps.google.com) and [Mapbox](http://mapbox.com)
 
+## Get
+
+Mapzei is now available on [Play Store](https://play.google.com/store/apps/details?id=info.sunng.muzei.maps)
+
 
