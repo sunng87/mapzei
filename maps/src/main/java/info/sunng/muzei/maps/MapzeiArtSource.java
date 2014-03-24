@@ -19,6 +19,7 @@ import java.util.Calendar;
 import info.sunng.muzei.maps.data.City;
 import info.sunng.muzei.maps.data.CityClient;
 import info.sunng.muzei.maps.maps.GoogleMapsStatic;
+import info.sunng.muzei.maps.maps.GoogleSatelliteStatic;
 import info.sunng.muzei.maps.maps.MapboxStatic;
 import info.sunng.muzei.maps.maps.OSMStatic;
 
@@ -46,6 +47,8 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
                 return new OSMStatic();
             case "google":
                 return new GoogleMapsStatic();
+            case "googles":
+                return new GoogleSatelliteStatic();
             case "mapbox":
                 String mapKey = sp.getString("MAPBOX_MAP_KEY", null);
                 return new MapboxStatic(mapKey.trim());
