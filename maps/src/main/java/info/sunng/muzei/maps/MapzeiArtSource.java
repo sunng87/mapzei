@@ -22,6 +22,7 @@ import info.sunng.muzei.maps.maps.GoogleMapsStatic;
 import info.sunng.muzei.maps.maps.GoogleSatelliteStatic;
 import info.sunng.muzei.maps.maps.MapboxStatic;
 import info.sunng.muzei.maps.maps.OSMStatic;
+import info.sunng.muzei.maps.maps.YandexMapsStatic;
 
 /**
  * Created by nsun on 3/19/14.
@@ -49,6 +50,8 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
                 return new GoogleMapsStatic();
             case "googles":
                 return new GoogleSatelliteStatic();
+            case "yandex":
+                return new YandexMapsStatic();
             case "mapbox":
                 String mapKey = sp.getString("MAPBOX_MAP_KEY", null);
                 return new MapboxStatic(mapKey.trim());
