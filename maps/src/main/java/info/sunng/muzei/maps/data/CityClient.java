@@ -24,8 +24,7 @@ public class CityClient {
                 return null;
             }
         } catch (AVException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
@@ -34,8 +33,7 @@ public class CityClient {
         try {
             return query.count();
         } catch (AVException e) {
-            e.printStackTrace();
-            return 0;
+            throw new RuntimeException(e);
         }
     }
 }

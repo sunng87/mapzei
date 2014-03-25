@@ -77,46 +77,52 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
         // check network
         if (! isNetworkConnected()) {
             // schedule a short term retry
-            throw new RetryException();
+            scheduleUpdate(System.currentTimeMillis() + 1 * 60 * 60 * 1000);
         } else {
             // WIFI only
             if (sp.getBoolean("WIFI_ONLY", false) && !isWifi()) {
-                throw new RetryException();
+                scheduleUpdate(System.currentTimeMillis() + 1 * 60 * 60 * 1000);
             }
         }
 
-        CityClient cc = new CityClient();
-        int q = getQForToday(cc);
-        Log.d("mapartsurce", "Q for toady: " + q);
+        try {
+            CityClient cc = new CityClient();
+            int q = getQForToday(cc);
+            Log.d("mapartsurce", "Q for toady: " + q);
 
-        City city = cc.getCity(q);
+            City city = cc.getCity(q);
 
-        float lat = city.getLat();
-        float lon = city.getLon();
+            float lat = city.getLat();
+            float lon = city.getLon();
 
-        int zoom = Integer.valueOf(sp.getString("ZOOM_LEVEL", "16"));
-        String url = getMapSource().getMapUrlFor(lat, lon, zoom, 1080, 1080);
-        Log.d("mapartsource", url);
+            int zoom = Integer.valueOf(sp.getString("ZOOM_LEVEL", "16"));
+            String url = getMapSource().getMapUrlFor(lat, lon, zoom, 1080, 1080);
+            Log.d("mapartsource", url);
 
-        if (getCurrentArtwork() != null &&
-                (getCurrentArtwork().getImageUri().toString()).equals(url)) {
-            // map unchanged, skip
-            return ;
-        };
+            if (getCurrentArtwork() != null &&
+                    (getCurrentArtwork().getImageUri().toString()).equals(url)) {
+                // map unchanged, skip
+                return;
+            }
+            ;
 
-        //String wikiUrl = String.format("https://en.wikipedia.com/wiki/%s", city.getAname().replaceAll(" ", "_"));
-        String geoUri = String.format("geo:%f,%f?z=%d", city.getLat(), city.getLon(), zoom);
+            //String wikiUrl = String.format("https://en.wikipedia.com/wiki/%s", city.getAname().replaceAll(" ", "_"));
+            String geoUri = String.format("geo:%f,%f?z=%d", city.getLat(), city.getLon(), zoom);
 
-        publishArtwork(new Artwork.Builder()
-                .title(city.getAname())
-                .byline(city.getCountry())
-                .imageUri(Uri.parse(url))
-                .token(String.valueOf(city.getQ()))
-                .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(geoUri)))
-                .build());
+            publishArtwork(new Artwork.Builder()
+                    .title(city.getAname())
+                    .byline(city.getCountry())
+                    .imageUri(Uri.parse(url))
+                    .token(String.valueOf(city.getQ()))
+                    .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(geoUri)))
+                    .build());
+        } catch (Exception e) {
+            throw new RetryException();
+        } finally {
+            // schedule next update: 3h later
+            scheduleUpdate(System.currentTimeMillis() + 3 * 60 * 60 * 1000);
+        }
 
-        // schedule next update: 3h later
-        scheduleUpdate(System.currentTimeMillis() + 3 * 60 * 60 * 1000);
 
     }
 
