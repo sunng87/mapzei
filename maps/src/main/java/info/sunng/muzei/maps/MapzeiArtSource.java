@@ -40,7 +40,7 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
 
     public MapSource getMapSource() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        String mapSource = sp.getString("MAP_SOURCE", "osm");
+        String mapSource = sp.getString("MAP_SOURCE", "google");
         Log.d(SOURCE_NAME, mapSource);
         switch (mapSource){
             case "osm":
@@ -53,7 +53,7 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
                 String mapKey = sp.getString("MAPBOX_MAP_KEY", null);
                 return new MapboxStatic(mapKey.trim());
             default:
-                return new OSMStatic();
+                return new GoogleMapsStatic();
         }
 
     }

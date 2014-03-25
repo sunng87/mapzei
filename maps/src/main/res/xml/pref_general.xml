@@ -3,7 +3,7 @@
     <ListPreference
         android:key="MAP_SOURCE"
         android:title="@string/pref_title_map_source"
-        android:defaultValue="osm"
+        android:defaultValue="google"
         android:entries="@array/pref_map_source_list_titles"
         android:entryValues="@array/pref_map_source_list_values"/>
 
