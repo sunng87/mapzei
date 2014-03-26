@@ -150,7 +150,10 @@ public class SettingsActivity extends PreferenceActivity {
             } else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
-                preference.setSummary(stringValue);
+                if (!stringValue.isEmpty()) {
+                    preference.setSummary(stringValue);
+                }
+
             }
             return true;
         }
