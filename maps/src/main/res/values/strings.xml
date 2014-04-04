@@ -3,4 +3,6 @@
     <string name="source_description">Muzei for map geeks: Random city map, everyday</string>
     <string name="source_name">Mapzei</string>
 
+    <string name="share_city">Share City</string>
+    <string name="city_wiki">Wikipedia</string>
 </resources>

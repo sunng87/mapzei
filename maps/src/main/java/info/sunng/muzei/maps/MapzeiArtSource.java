@@ -11,7 +11,9 @@ import android.util.Log;
 
 import com.avos.avoscloud.AVOSCloud;
 import com.google.android.apps.muzei.api.Artwork;
+import com.google.android.apps.muzei.api.MuzeiArtSource;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
+import com.google.android.apps.muzei.api.UserCommand;
 
 import java.util.Calendar;
 
@@ -32,6 +34,9 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
     public static final long SOME_DAY = 484070400000l; // 1985.5.5
 
     public static final String REFRESH = "REFRESH";
+
+    public static final int SHARE_ARTWORK = 1;
+    public static final int CITY_ON_WIKIPEDIA = 2;
 
     public MapzeiArtSource() {
         super(SOURCE_NAME);
@@ -68,6 +73,41 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
     }
 
     @Override
+    protected void onCustomCommand(int id) {
+        if (id == SHARE_ARTWORK) {
+            Artwork a = getCurrentArtwork();
+            String cityName = a.getTitle();
+            String countryName = a.getByline();
+            String pos = a.getToken();
+            String[] latlon = pos.split(",");
+
+            String osmUrlBase = "http://osm.org/#map=12/%s/%s";
+            String osmUrl = String.format(osmUrlBase, latlon[0], latlon[1]);
+
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_TEXT, "#TodayOnMapzei "
+              + cityName + ", "
+              + countryName + ". "
+              + osmUrl + " "
+              + "#Mapzei, random city map android (muzei) wallpaper.");
+
+            i = Intent.createChooser(i, "Share city");
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+        }
+
+        if (id == CITY_ON_WIKIPEDIA) {
+            Artwork a = getCurrentArtwork();
+            String cityName = a.getTitle();
+            String url = String.format("http://en.wikipedia.com/wiki/%s", cityName.replaceAll(" ", "_"));
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+        }
+    }
+
+    @Override
     protected void onTryUpdate(int reason) throws RetryException {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         // check network
@@ -100,24 +140,27 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
                 // map unchanged, skip
                 return;
             }
-            ;
 
-            //String wikiUrl = String.format("https://en.wikipedia.com/wiki/%s", city.getAname().replaceAll(" ", "_"));
-            String geoUri = String.format("geo:%f,%f?z=%d", city.getLat(), city.getLon(), zoom);
+            String geoUri = String.format("geo:%f,%f?z=%d", lat, lon, zoom);
 
             publishArtwork(new Artwork.Builder()
                     .title(city.getAname())
                     .byline(city.getCountry())
                     .imageUri(Uri.parse(url))
-                    .token(String.valueOf(city.getQ()))
+                    .token(String.format("%f,%f", lat, lon))
                     .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(geoUri)))
                     .build());
+
+            UserCommand shareCmd = new UserCommand(SHARE_ARTWORK, getString(R.string.share_city));
+            UserCommand wikiCmd = new UserCommand(CITY_ON_WIKIPEDIA, getString(R.string.city_wiki));
+            setUserCommands(shareCmd, wikiCmd);
         } catch (Exception e) {
             throw new RetryException();
         } finally {
             // schedule next update: 6h later
             scheduleUpdate(System.currentTimeMillis() + 6 * 60 * 60 * 1000);
         }
+
 
 
     }
