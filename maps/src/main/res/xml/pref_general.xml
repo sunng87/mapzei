@@ -8,12 +8,10 @@
             android:entries="@array/pref_map_source_list_titles"
             android:entryValues="@array/pref_map_source_list_values"/>
 
-        <ListPreference
+        <info.sunng.muzei.maps.NumberPickerPreference
             android:key="ZOOM_LEVEL"
             android:title="@string/pref_title_zoom_level"
-            android:defaultValue="16"
-            android:entries="@array/pref_zoom_level_list_titles"
-            android:entryValues="@array/pref_zoom_level_list_values" />
+            android:defaultValue="16" />
 
         <EditTextPreference
             android:key="MAPBOX_MAP_KEY"
