@@ -9,14 +9,18 @@ android {
     def Properties signingProps = new Properties()
     signingProps.load(new FileInputStream(file('../local.properties')))
 
+    def _versionName = "1.2.2"
+    def _versionCode = 9
+
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 19
-        versionCode 8
-        versionName "1.2.1"
+        versionCode _versionCode
+        versionName _versionName
 
-        resValue "string","avoscloud_api_id",keyProps['avoscloud_api_id']
-        resValue "string","avoscloud_api_secret",keyProps['avoscloud_api_secret']
+        resValue "string", "avoscloud_api_id", keyProps['avoscloud_api_id']
+        resValue "string", "avoscloud_api_secret", keyProps['avoscloud_api_secret']
+        resValue "string", "pref_title_about", ("Mapzei " + _versionName)
     }
 
     compileOptions {

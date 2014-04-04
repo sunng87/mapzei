@@ -1,5 +1,8 @@
 <resources>
-        <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_category_map">Map Settings</string>
+    <string name="title_category_network">Network Settings</string>
+    <string name="title_category_about">About</string>
 
     <!-- Strings related to Settings -->
 
@@ -45,5 +48,9 @@
 
     <string name="pref_title_wifi_only">Only on WiFi</string>
 
+    <!--string name="pref_title_about">Mapzei</string-->
+    <string name="pref_summary_about">Mapzei code available on Github.</string>
 
+    <string name="pref_title_rate">Rate Me</string>
+    <string name="pref_summary_rate">Rate Mapzei on Play Store.</string>
 </resources>
