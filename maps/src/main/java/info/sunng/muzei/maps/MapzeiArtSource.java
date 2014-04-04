@@ -116,8 +116,8 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
         } catch (Exception e) {
             throw new RetryException();
         } finally {
-            // schedule next update: 3h later
-            scheduleUpdate(System.currentTimeMillis() + 3 * 60 * 60 * 1000);
+            // schedule next update: 6h later
+            scheduleUpdate(System.currentTimeMillis() + 6 * 60 * 60 * 1000);
         }
 
 
