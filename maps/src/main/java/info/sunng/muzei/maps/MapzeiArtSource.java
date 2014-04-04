@@ -1,6 +1,5 @@
 package info.sunng.muzei.maps;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,8 +10,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.avos.avoscloud.AVOSCloud;
-import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.android.apps.muzei.api.Artwork;
+import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 
 import java.util.Calendar;
 

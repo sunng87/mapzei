@@ -2,8 +2,6 @@ package info.sunng.muzei.maps;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -46,7 +44,6 @@ public class NumberPickerPreference extends DialogPreference {
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
-            Log.i("NumverPickerPreference", np.getValue()+"");
             if (callChangeListener(String.valueOf(np.getValue()))) {
                 mValue = np.getValue();
                 persistString(String.valueOf(np.getValue()));

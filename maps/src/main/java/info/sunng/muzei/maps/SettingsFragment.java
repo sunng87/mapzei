@@ -52,7 +52,6 @@ public class SettingsFragment extends PreferenceFragment {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 if (!stringValue.isEmpty()) {
-                    Log.d("Framentss", stringValue);
                     preference.setSummary(stringValue);
                 }
 
