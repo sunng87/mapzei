@@ -44,5 +44,11 @@
             <intent android:action="android.intent.action.VIEW"
                 android:data="market://details?id=info.sunng.muzei.maps"/>
         </Preference>
+
+        <Preference android:title="@string/pref_title_feedback"
+            android:summary="@string/pref_summary_feedback">
+            <intent android:action="android.intent.action.SENDTO"
+                android:data="mailto:sunng@about.me"/>
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

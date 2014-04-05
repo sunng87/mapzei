@@ -53,4 +53,7 @@
 
     <string name="pref_title_rate">Rate Me</string>
     <string name="pref_summary_rate">Rate Mapzei on Play Store.</string>
+
+    <string name="pref_title_feedback">Feedback</string>
+    <string name="pref_summary_feedback">Talk anything about the app, maps or Android with me.</string>
 </resources>
