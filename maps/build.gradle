@@ -9,8 +9,8 @@ android {
     def Properties signingProps = new Properties()
     signingProps.load(new FileInputStream(file('../local.properties')))
 
-    def _versionName = "1.3.1"
-    def _versionCode = 11
+    def _versionName = "1.4.0"
+    def _versionCode = 12
 
     defaultConfig {
         minSdkVersion 17

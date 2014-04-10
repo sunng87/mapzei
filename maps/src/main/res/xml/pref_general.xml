@@ -13,6 +13,29 @@
             android:title="@string/pref_title_zoom_level"
             android:defaultValue="16" />
 
+        <PreferenceScreen android:title="@string/pref_title_google"
+            android:persistent="false">
+
+            <ListPreference
+                android:key="GOOGLE_MAP_TYPE"
+                android:title="@string/pref_title_google_map_type"
+                android:defaultValue="roadmap"
+                android:entries="@array/pref_google_map_type_list_titles"
+                android:entryValues="@array/pref_google_map_type_list_values" />
+
+            <EditTextPreference
+                android:key="GOOGLE_MAP_STYLE"
+                android:title="@string/pref_title_google_map_style"
+                android:summary="@string/pref_summary_google_map_style"/>
+
+            <Preference android:title="@string/pref_title_google_map_style_help"
+                android:summary="@string/pref_summary_google_map_style_help">
+                <intent android:data="https://developers.google.com/maps/documentation/staticmaps/#StyledMaps"
+                    android:action="android.intent.action.VIEW"/>
+            </Preference>
+
+        </PreferenceScreen>
+
         <EditTextPreference
             android:key="MAPBOX_MAP_KEY"
             android:title="@string/pref_title_mapbox_key"

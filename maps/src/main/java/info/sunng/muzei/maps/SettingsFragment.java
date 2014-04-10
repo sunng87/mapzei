@@ -5,7 +5,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  *
@@ -13,13 +12,14 @@ import android.util.Log;
 public class SettingsFragment extends PreferenceFragment {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_general);
 
         bindPreferenceSummaryToValue(findPreference("MAP_SOURCE"));
         bindPreferenceSummaryToValue(findPreference("ZOOM_LEVEL"));
         bindPreferenceSummaryToValue(findPreference("MAPBOX_MAP_KEY"));
+        bindPreferenceSummaryToValue(findPreference("GOOGLE_MAP_TYPE"));
     }
 
 

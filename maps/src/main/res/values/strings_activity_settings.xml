@@ -13,13 +13,11 @@
     <string-array name="pref_map_source_list_titles">
         <item>OpenStreetMap (Mapnik)</item>
         <item>Google Maps</item>
-        <item>Google Satellite</item>
         <item>Mapbox</item>
     </string-array>
     <string-array name="pref_map_source_list_values">
         <item>osm</item>
         <item>google</item>
-        <item>googles</item>
         <item>mapbox</item>
     </string-array>
 
@@ -28,23 +26,6 @@
     <string name="mapbox_id_required">Mapbox key is required if you use Mapbox source</string>
 
     <string name="pref_title_zoom_level">Zoom Level</string>
-    <string-array name="pref_zoom_level_list_titles">
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-    </string-array>
-
-    <string-array name="pref_zoom_level_list_values">
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-    </string-array>
 
     <string name="pref_title_wifi_only">Only on WiFi</string>
 
@@ -56,4 +37,26 @@
 
     <string name="pref_title_feedback">Feedback</string>
     <string name="pref_summary_feedback">Talk anything about the app, maps or Android with me.</string>
+
+    <string name="pref_title_google">Google Maps</string>
+    <string name="pref_title_google_map_type">Map Type</string>
+    <string-array name="pref_google_map_type_list_titles">
+        <item>Road</item>
+        <item>Satellite</item>
+        <item>Terrain</item>
+        <item>Hybird</item>
+    </string-array>
+
+    <string-array name="pref_google_map_type_list_values">
+        <item>roadmap</item>
+        <item>satellite</item>
+        <item>terrain</item>
+        <item>hybird</item>
+    </string-array>
+
+    <string name="pref_title_google_map_style">Custom Map Style</string>
+    <string name="pref_summary_google_map_style">Paste your custom style rules here</string>
+
+    <string name="pref_title_google_map_style_help">Style Rules Help</string>
+    <string name="pref_summary_google_map_style_help">How to write your custom style rules</string>
 </resources>
