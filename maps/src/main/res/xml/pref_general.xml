@@ -60,6 +60,7 @@
         <CheckBoxPreference
             android:key="WIFI_ONLY"
             android:title="@string/pref_title_wifi_only"
+            android:summary="@string/pref_summary_wifi_only"
             android:defaultValue="false" />
     </PreferenceCategory>
 
