@@ -36,14 +36,22 @@
 
         </PreferenceScreen>
 
-        <EditTextPreference
-            android:key="MAPBOX_MAP_KEY"
-            android:title="@string/pref_title_mapbox_key"
-            android:summary="@string/pref_summary_mapbox_key"
-            android:defaultValue="@string/mapbox_map_id"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:maxLines="1" />
+        <PreferenceScreen android:title="@string/pref_title_mapbox"
+            android:persistent="false">
+            <EditTextPreference
+                android:key="MAPBOX_MAP_KEY"
+                android:title="@string/pref_title_mapbox_key"
+                android:summary="@string/pref_summary_mapbox_key"
+                android:defaultValue="@string/mapbox_map_id"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:maxLines="1" />
+
+            <Preference android:title="@string/pref_title_mapbox_help">
+                <intent android:data="http://mapbox.com"
+                    android:action="android.intent.action.VIEW"/>
+            </Preference>
+        </PreferenceScreen>
 
     </PreferenceCategory>
 

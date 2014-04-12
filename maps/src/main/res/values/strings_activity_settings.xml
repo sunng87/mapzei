@@ -21,6 +21,9 @@
         <item>mapbox</item>
     </string-array>
 
+    <string name="pref_title_mapbox">Mapbox</string>
+    <string name="pref_title_mapbox_help">More about Mapbox</string>
+
     <string name="pref_title_mapbox_key">Mapbox Key</string>
     <string name="pref_summary_mapbox_key">Required if you use Mapbox source</string>
     <string name="mapbox_id_required">Mapbox key is required if you use Mapbox source</string>
