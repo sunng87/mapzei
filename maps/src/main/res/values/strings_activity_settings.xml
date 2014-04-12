@@ -55,7 +55,7 @@
     </string-array>
 
     <string name="pref_title_google_map_style">Custom Map Style</string>
-    <string name="pref_summary_google_map_style">Paste your custom style rules here</string>
+    <string name="pref_summary_google_map_style">Paste your custom line separated style rules</string>
 
     <string name="pref_title_google_map_style_help">Style Rules Help</string>
     <string name="pref_summary_google_map_style_help">How to write your custom style rules</string>
