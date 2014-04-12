@@ -14,6 +14,7 @@ import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.android.apps.muzei.api.UserCommand;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import info.sunng.muzei.maps.data.City;
@@ -50,7 +51,11 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
             case "google":
                 GoogleMapsStatic gms = new GoogleMapsStatic();
                 gms.setMapType(sp.getString("GOOGLE_MAP_TYPE", "roadmap"));
-                gms.setStyleConfig(sp.getString("GOOGLE_MAP_STYLE", "").split("\n"));
+                try {
+                    gms.setStyleConfigJson(sp.getString("GOOGLE_MAP_STYLE", "[]"));
+                } catch (Exception e) {
+                    gms.setStyleConfig(null);
+                }
                 return gms;
             case "googles": // legacy 1.2 settings value
                 GoogleMapsStatic gmsSatellite = new GoogleMapsStatic();
