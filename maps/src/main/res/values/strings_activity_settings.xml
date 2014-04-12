@@ -43,7 +43,7 @@
     <string name="pref_summary_feedback">Talk anything about the app, maps or Android with me.</string>
 
     <string name="pref_title_google">Google Maps</string>
-    <string name="pref_title_google_map_type">Map Type</string>
+    <string name="pref_title_google_map_type">Map type</string>
     <string-array name="pref_google_map_type_list_titles">
         <item>Road</item>
         <item>Satellite</item>
