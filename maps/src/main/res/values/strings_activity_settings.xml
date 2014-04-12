@@ -59,7 +59,10 @@
     </string-array>
 
     <string name="pref_title_google_map_style">Custom map style</string>
-    <string name="pref_summary_google_map_style">Paste your custom line separated style rules</string>
+    <string name="pref_summary_google_map_style">Paste json style rules here</string>
+
+    <string name="pref_title_google_map_style_snazzy">Find custom styles on SnazzyMaps</string>
+    <string name="pref_summary_google_map_style_snazzy">Browse map styles on snazzymaps.com</string>
 
     <string name="pref_title_google_map_style_help">Style rules help</string>
     <string name="pref_summary_google_map_style_help">How to write your custom style rules</string>
