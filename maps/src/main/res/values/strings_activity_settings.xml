@@ -11,13 +11,13 @@
 
     <string name="pref_title_map_source">Map source</string>
     <string-array name="pref_map_source_list_titles">
-        <item>OpenStreetMap (Mapnik)</item>
         <item>Google Maps</item>
+        <item>OpenStreetMap (Mapnik)</item>
         <item>Mapbox</item>
     </string-array>
     <string-array name="pref_map_source_list_values">
-        <item>osm</item>
         <item>google</item>
+        <item>osm</item>
         <item>mapbox</item>
     </string-array>
 
