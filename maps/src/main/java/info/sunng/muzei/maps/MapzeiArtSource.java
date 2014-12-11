@@ -11,10 +11,10 @@ import android.util.Log;
 
 import com.avos.avoscloud.AVOSCloud;
 import com.google.android.apps.muzei.api.Artwork;
+import com.google.android.apps.muzei.api.MuzeiContract;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.android.apps.muzei.api.UserCommand;
 
-import java.io.IOException;
 import java.util.Calendar;
 
 import info.sunng.muzei.maps.data.City;
@@ -92,8 +92,17 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
             String osmUrlBase = "http://osm.org/#map=12/%s/%s";
             String osmUrl = String.format(osmUrlBase, latlon[0], latlon[1]);
 
+            /*
+            Bitmap theMap = null;
+            try {
+                theMap = MuzeiContract.Artwork.getCurrentArtworkBitmap(this);
+            } catch (FileNotFoundException e) {
+                //e.printStackTrace();
+            }*/
+
             Intent i = new Intent(Intent.ACTION_SEND);
-            i.setType("text/plain");
+            i.setType("image/png");
+            i.putExtra(Intent.EXTRA_STREAM, MuzeiContract.Artwork.CONTENT_URI);
             i.putExtra(Intent.EXTRA_TEXT, "#TodayOnMapzei "
               + cityName + ", "
               + countryName + ". "
