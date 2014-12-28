@@ -14,6 +14,9 @@ import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.MuzeiContract;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.android.apps.muzei.api.UserCommand;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.Calendar;
 
@@ -73,11 +76,6 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        AVOSCloud.useAVCloudCN();
-        AVOSCloud.initialize(this,
-                getResources().getString(R.string.avoscloud_api_id),
-                getResources().getString(R.string.avoscloud_api_secret));
     }
 
     @Override
@@ -107,7 +105,7 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
               + cityName + ", "
               + countryName + ". "
               + osmUrl + " "
-              + "#Mapzei, random city map android (muzei) wallpaper.");
+              + "#Mapzei, random map for #Muzei. http://bit.ly/1taCrAZ");
 
             i = Intent.createChooser(i, "Share city");
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

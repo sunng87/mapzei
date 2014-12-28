@@ -21,6 +21,7 @@ android {
         resValue "string", "avoscloud_api_id", keyProps['avoscloud_api_id']
         resValue "string", "avoscloud_api_secret", keyProps['avoscloud_api_secret']
         resValue "string", "pref_title_about", ("Mapzei " + _versionName)
+        resValue "string", "snazzy_api_key", keyProps['snazzy_api_key']
     }
 
     compileOptions {
@@ -55,5 +56,8 @@ android {
 dependencies {
     compile 'com.google.android.apps.muzei:muzei-api:2+'
     compile 'com.android.support:support-v4:+'
+    compile 'com.squareup.okhttp:okhttp:2.1.0'
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
