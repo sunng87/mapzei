@@ -1,8 +1,8 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     def Properties keyProps = new Properties()
     keyProps.load(new FileInputStream(file('keys.properties')))
@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 19
+        targetSdkVersion 22
         versionCode _versionCode
         versionName _versionName
 
@@ -55,7 +55,7 @@ android {
 
 dependencies {
     compile 'com.google.android.apps.muzei:muzei-api:2+'
-    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:support-v4:22.2.0'
     compile 'com.squareup.okhttp:okhttp:2.1.0'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
