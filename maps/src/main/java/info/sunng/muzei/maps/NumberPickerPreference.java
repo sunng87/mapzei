@@ -20,12 +20,7 @@ public class NumberPickerPreference extends DialogPreference {
         super(context, attrs);
 
         setDialogLayoutResource(R.layout.number_picker);
-
-        setPositiveButtonText(android.R.string.ok);
-        setNegativeButtonText(android.R.string.cancel);
-
         setDialogIcon(null);
-
     }
 
     @Override

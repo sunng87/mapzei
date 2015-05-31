@@ -1,23 +1,25 @@
 package info.sunng.muzei.maps;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.preference.DialogPreference;
-import android.preference.Preference;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
+import android.widget.TextView;
 
-import com.avos.avoscloud.LogUtil;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,24 +29,46 @@ import info.sunng.muzei.maps.data.StyleClient;
 /**
  * Created by nsun on 12/28/14.
  */
-public class StylePickerPreference extends DialogPreference {
+public class StylePickerPreference extends DialogPreference implements View.OnClickListener {
 
     static final String TAG = StylePickerPreference.class.getCanonicalName();
 
-    private final StyleAdaptor adaptor =  new StyleAdaptor(getContext(), R.layout.style_preview_view);;
+    private static DisplayImageOptions defaultUILOptions = new DisplayImageOptions.Builder()
+            .cacheOnDisk(true).imageScaleType(ImageScaleType.EXACTLY_STRETCHED).build();
+
+    private RecyclerView rv;
+    private StyleAdapter rva;
+    private View loadingView;
+    private EditText styleEditor;
+    private String storedStyle;
+
+
     public StylePickerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         setDialogLayoutResource(R.layout.style_picker_layout);
+    }
+
+    @Override
+    protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
+        super.onSetInitialValue(restorePersistedValue, defaultValue);
+        if (!restorePersistedValue) {
+            storedStyle = (String)defaultValue;
+        } else {
+            storedStyle = getPersistedString("");
+        }
     }
 
     @Override
     protected View onCreateDialogView() {
         View view = super.onCreateDialogView();
 
-        GridView gv = (GridView)view.findViewById(R.id.style_grid);
-        gv.setNumColumns(3);
-        gv.setAdapter(adaptor);
+        rv = (RecyclerView) view.findViewById(R.id.style_grid);
+        rv.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        rva = new StyleAdapter(new ArrayList<Style>(), this);
+        rv.setAdapter(rva);
+
+        loadingView = view.findViewById(R.id.progressBar);
 
         new StyleLoadTask().execute(1);
 
@@ -55,6 +79,28 @@ public class StylePickerPreference extends DialogPreference {
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
 
+        styleEditor = (EditText) view.findViewById(R.id.style_json);
+        if (storedStyle != null) {
+            styleEditor.setText(storedStyle);
+        }
+    }
+
+    @Override
+    protected void onDialogClosed(boolean positiveResult) {
+        if (positiveResult) {
+            String result = styleEditor.getText().toString();
+            if (callChangeListener(result)) {
+                persistString(result);
+            }
+        }
+        super.onDialogClosed(positiveResult);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int position = rv.getChildAdapterPosition(view);
+        Style s = rva.getStyle(position);
+        styleEditor.setText(s.getJson());
     }
 
     private class StyleLoadTask extends AsyncTask<Integer, Void, List<Style>> {
@@ -71,29 +117,60 @@ public class StylePickerPreference extends DialogPreference {
 
         @Override
         protected void onPostExecute(List<Style> styles) {
-            adaptor.addAll(styles);
-            adaptor.notifyDataSetChanged();
+            rva.addStyles(styles);
+            loadingView.setVisibility(View.GONE);
         }
     }
 
-    public static class StyleAdaptor extends ArrayAdapter<Style> {
-        private LayoutInflater mLayoutInflater;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView im;
+        public TextView tv;
 
-        public StyleAdaptor(Context context, int resource) {
-            super(context, resource);
-            mLayoutInflater = LayoutInflater.from(context);
+        public ViewHolder(View v) {
+            super(v);
+            this.im = (ImageView) v.findViewById(R.id.style_preview_image);
+            this.tv = (TextView) v.findViewById(R.id.style_name);
+        }
+    }
+
+    public static class StyleAdapter extends RecyclerView.Adapter<ViewHolder> {
+        private LayoutInflater mLayoutInflater;
+        private List<Style> styles;
+        private View.OnClickListener handler;
+
+        public StyleAdapter(List<Style> styles, View.OnClickListener handler) {
+            this.styles = styles;
+            this.handler = handler;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Style s = this.getItem(position);
-            Log.d(TAG, "rendering " + position);
-
-            convertView = mLayoutInflater.inflate(R.layout.style_preview_view, null);
-            ImageView im = (ImageView)convertView.findViewById(R.id.style_preview_image);
-
-            ImageLoader.getInstance().displayImage(s.getImageUrl(), im);
-            return convertView;
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            View v = mLayoutInflater.from(viewGroup.getContext()).inflate(
+                    R.layout.style_preview_view, viewGroup, false);
+            ViewHolder vh = new ViewHolder(v);
+            v.setOnClickListener(handler);
+            return vh;
         }
+
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, int i) {
+            ImageLoader.getInstance().displayImage(styles.get(i).getImageUrl(), viewHolder.im, defaultUILOptions);
+            viewHolder.tv.setText(styles.get(i).getName());
+        }
+
+        @Override
+        public int getItemCount() {
+            return styles.size();
+        }
+
+        public void addStyles (List<Style> ns) {
+            this.styles.addAll(ns);
+            this.notifyDataSetChanged();
+        }
+
+        public Style getStyle (int i) {
+            return this.styles.get(i);
+        }
+
     }
 }

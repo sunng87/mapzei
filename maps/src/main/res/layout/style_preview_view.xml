@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:paddingRight="10dp" android:orientation="vertical">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="128dp"
-        android:minWidth="128dp"
         android:id="@+id/style_preview_image"/>
-</FrameLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="3dp"
+        android:textColor="#ffffffff"
+        android:background="#af000000"
+        android:padding="3dp"
+        android:layout_alignBottom="@id/style_preview_image"
+        android:id="@+id/style_name"/>
+
+</RelativeLayout>

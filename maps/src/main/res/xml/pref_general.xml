@@ -23,10 +23,10 @@
                 android:entries="@array/pref_google_map_type_list_titles"
                 android:entryValues="@array/pref_google_map_type_list_values" />
 
-            <EditTextPreference
+            <!--EditTextPreference
                 android:key="GOOGLE_MAP_STYLE"
                 android:title="@string/pref_title_google_map_style"
-                android:summary="@string/pref_summary_google_map_style"/>
+                android:summary="@string/pref_summary_google_map_style"/-->
 
             <info.sunng.muzei.maps.StylePickerPreference
                 android:key="GOOGLE_MAP_STYLE"
