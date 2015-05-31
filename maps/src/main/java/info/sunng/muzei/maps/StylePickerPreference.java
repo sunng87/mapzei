@@ -1,7 +1,6 @@
 package info.sunng.muzei.maps;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.preference.DialogPreference;
 import android.support.v7.widget.LinearLayoutManager;
