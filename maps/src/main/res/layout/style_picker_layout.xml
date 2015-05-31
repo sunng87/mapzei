@@ -30,6 +30,7 @@
         android:inputType="textMultiLine"
         android:layout_weight="0.5"
         android:minLines="8"
-        android:maxLines="8"/>
+        android:maxLines="8"
+        android:hint="@string/style_json_hint" />
 
 </LinearLayout>

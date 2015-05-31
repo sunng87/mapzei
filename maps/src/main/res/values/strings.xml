@@ -5,4 +5,5 @@
 
     <string name="share_city">Share City</string>
     <string name="city_wiki">Wikipedia</string>
+    <string name="style_json_hint">Tap image to set style</string>
 </resources>
