@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.preference.DialogPreference;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,10 +38,12 @@ public class StylePickerPreference extends DialogPreference implements View.OnCl
 
     private RecyclerView rv;
     private StyleAdapter rva;
+    private LinearLayoutManager rlm;
     private View loadingView;
     private EditText styleEditor;
     private String storedStyle;
-
+    private boolean snazzySelectorLoading = false;
+    private int snazzySelectorPage = 1;
 
     public StylePickerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -62,14 +65,27 @@ public class StylePickerPreference extends DialogPreference implements View.OnCl
         View view = super.onCreateDialogView();
 
         rv = (RecyclerView) view.findViewById(R.id.style_grid);
-        rv.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        rlm = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rv.setLayoutManager(rlm);
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int visibleItemCount = rlm.getChildCount();
+                int totalItemCount = rlm.getItemCount();
+                int pastVisiblesItems = rlm.findFirstVisibleItemPosition();
+
+                if (! snazzySelectorLoading) {
+                    if ( (visibleItemCount+pastVisiblesItems) >= totalItemCount) {
+                        new StyleLoadTask().execute(snazzySelectorPage++);
+                    }
+                }
+            }
+        });
 
         rva = new StyleAdapter(new ArrayList<Style>(), this);
         rv.setAdapter(rva);
 
         loadingView = view.findViewById(R.id.progressBar);
-
-        new StyleLoadTask().execute(1);
 
         return view;
     }
@@ -82,6 +98,9 @@ public class StylePickerPreference extends DialogPreference implements View.OnCl
         if (storedStyle != null) {
             styleEditor.setText(storedStyle);
         }
+
+        snazzySelectorPage = 1;
+        new StyleLoadTask().execute(snazzySelectorPage++);
     }
 
     @Override
@@ -107,6 +126,7 @@ public class StylePickerPreference extends DialogPreference implements View.OnCl
         @Override
         protected List<Style> doInBackground(Integer... params) {
             try {
+                snazzySelectorLoading = true;
                 return StyleClient.fetchStyles(params[0], getContext());
             } catch (Exception e) {
                 Log.e(TAG, "Error fetching snazzymaps styles", e);
@@ -118,6 +138,7 @@ public class StylePickerPreference extends DialogPreference implements View.OnCl
         protected void onPostExecute(List<Style> styles) {
             rva.addStyles(styles);
             loadingView.setVisibility(View.GONE);
+            snazzySelectorLoading = false;
         }
     }
 
