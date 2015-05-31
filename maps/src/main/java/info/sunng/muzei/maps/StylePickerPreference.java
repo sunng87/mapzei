@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.preference.DialogPreference;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +28,7 @@ import info.sunng.muzei.maps.data.StyleClient;
 /**
  * Created by nsun on 12/28/14.
  */
-public class StylePickerPreference extends DialogPreference implements View.OnClickListener {
+public class StylePickerPreference extends DialogPreference implements View.OnLongClickListener {
 
     static final String TAG = StylePickerPreference.class.getCanonicalName();
 
@@ -115,10 +114,11 @@ public class StylePickerPreference extends DialogPreference implements View.OnCl
     }
 
     @Override
-    public void onClick(View view) {
+    public boolean onLongClick(View view) {
         int position = rv.getChildAdapterPosition(view);
         Style s = rva.getStyle(position);
         styleEditor.setText(s.getJson());
+        return false;
     }
 
     private class StyleLoadTask extends AsyncTask<Integer, Void, List<Style>> {
@@ -156,9 +156,9 @@ public class StylePickerPreference extends DialogPreference implements View.OnCl
     public static class StyleAdapter extends RecyclerView.Adapter<ViewHolder> {
         private LayoutInflater mLayoutInflater;
         private List<Style> styles;
-        private View.OnClickListener handler;
+        private View.OnLongClickListener handler;
 
-        public StyleAdapter(List<Style> styles, View.OnClickListener handler) {
+        public StyleAdapter(List<Style> styles, View.OnLongClickListener handler) {
             this.styles = styles;
             this.handler = handler;
         }
@@ -168,7 +168,7 @@ public class StylePickerPreference extends DialogPreference implements View.OnCl
             View v = mLayoutInflater.from(viewGroup.getContext()).inflate(
                     R.layout.style_preview_view, viewGroup, false);
             ViewHolder vh = new ViewHolder(v);
-            v.setOnClickListener(handler);
+            v.setOnLongClickListener(handler);
             return vh;
         }
 
