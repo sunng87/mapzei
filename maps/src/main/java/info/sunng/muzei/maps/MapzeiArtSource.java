@@ -8,15 +8,12 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.avos.avoscloud.AVOSCloud;
 import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.MuzeiContract;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.android.apps.muzei.api.UserCommand;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.Calendar;
 
@@ -98,18 +95,25 @@ public class MapzeiArtSource extends RemoteMuzeiArtSource {
                 //e.printStackTrace();
             }*/
 
-            Intent i = new Intent(Intent.ACTION_SEND);
-            i.setType("image/png");
-            i.putExtra(Intent.EXTRA_STREAM, MuzeiContract.Artwork.CONTENT_URI);
-            i.putExtra(Intent.EXTRA_TEXT, "#TodayOnMapzei "
-              + cityName + ", "
-              + countryName + ". "
-              + osmUrl + " "
-              + "#Mapzei, random map for #Muzei. http://bit.ly/1taCrAZ");
+            try {
+                Uri fileUri = ShareHelper.createTempFileForSharing(this, MuzeiContract.Artwork.CONTENT_URI);
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("image/png");
+                i.putExtra(Intent.EXTRA_STREAM, fileUri);
+                i.putExtra(Intent.EXTRA_TEXT, "#TodayOnMapzei "
+                        + cityName + ", "
+                        + countryName + ". "
+                        + osmUrl + " "
+                        + "#Mapzei, random map for #Muzei. http://bit.ly/1taCrAZ");
 
-            i = Intent.createChooser(i, "Share city");
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
+                i = Intent.createChooser(i, "Share city");
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            } catch (Exception e) {
+                Toast.makeText(this, "Failed to create temp file for sharing", Toast.LENGTH_LONG);
+            }
+
+
         }
 
         if (id == CITY_ON_WIKIPEDIA) {
